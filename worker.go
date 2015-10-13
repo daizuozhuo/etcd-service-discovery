@@ -37,7 +37,7 @@ func NewWorker(name, IP string, endpoints []string) *Worker {
 	w := &Worker{
 		Name: name,
 		IP: IP,
-		KeysAPI: client.NewKeysAPI(etcdClient)
+		KeysAPI: client.NewKeysAPI(etcdClient),
 
 	}
 	go w.HeartBeat()

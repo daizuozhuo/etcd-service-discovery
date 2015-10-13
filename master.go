@@ -22,7 +22,7 @@ type Member struct {
 	CPU    int
 }
 
-func NewMaster(endpoints []string) {
+func NewMaster(endpoints []string) *Master {
 	cfg := client.Config{
 		Endpoints:               endpoints,
 		Transport:               client.DefaultTransport,
