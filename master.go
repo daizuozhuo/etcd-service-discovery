@@ -4,14 +4,14 @@ import (
 	"log"
 	"time"
 
+	"encoding/json"
 	"github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/net/context"
 	"github.com/coreos/etcd/client"
-	"encoding/json"
 )
 
 type Master struct {
-	members  map[string]*Member
-	KeysAPI  client.KeysAPI
+	members map[string]*Member
+	KeysAPI client.KeysAPI
 }
 
 // Member is a client machine
@@ -19,7 +19,7 @@ type Member struct {
 	InGroup bool
 	IP      string
 	Name    string
-	CPU    int
+	CPU     int
 }
 
 func NewMaster(endpoints []string) *Master {
@@ -47,7 +47,7 @@ func (m *Master) AddWorker(info *WorkerInfo) {
 		InGroup: true,
 		IP:      info.IP,
 		Name:    info.Name,
-		CPU:    info.CPU,
+		CPU:     info.CPU,
 	}
 	m.members[member.Name] = member
 }
@@ -73,13 +73,13 @@ func (m *Master) WatchWorkers() {
 			if ok {
 				member.InGroup = false
 			}
-		} else if res.Action == "set" || res.Action == "update"{
+		} else if res.Action == "set" || res.Action == "update" {
 			info := &WorkerInfo{}
 			err := json.Unmarshal([]byte(res.Node.Value), info)
 			if err != nil {
 				log.Print(err)
 			}
-			if _, ok := m.members[info.Name]; ok {
+			if _, ok := m.members[res.Node.Key]; ok {
 				m.UpdateWorker(info)
 			} else {
 				m.AddWorker(info)
