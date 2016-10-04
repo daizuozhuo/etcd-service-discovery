@@ -1,0 +1,6 @@
+{
+	"ImportPath": "github.com/daizuozhuo/etcd-service-discovery",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v74",
+	"Deps": []
+}
